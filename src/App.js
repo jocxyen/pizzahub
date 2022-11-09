@@ -1,25 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import { AnimatePresence } from 'framer-motion';
+import { useEffect } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import { Create, Header, Main } from './components'
+import useShop from './context/ShopProvider';
 
-function App() {
+const App = () => {
+  const { getAllFood } = useShop();
+  useEffect(() => {
+    getAllFood();
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AnimatePresence exitBeforeEnter>
+      <div className="w-screen h-auto mb-0 flex flex-col bg-primary">
+        <Header />
+        <main className="w-full overflow-x-hidden">
+          <Routes>
+            <Route path="/*" element={<Main />} />
+            <Route path="/create" element={<Create />} />
+          </Routes>
+        </main>
+      </div>
+    </AnimatePresence>
   );
-}
-
+};
 export default App;
